@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 
 from evernote.api.client import EvernoteClient
-import evernote.edam.type.ttypes as Types
 
 
 load_dotenv()
