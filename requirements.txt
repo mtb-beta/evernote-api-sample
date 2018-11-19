@@ -1,1 +1,2 @@
 evernote3==1.25.12
+python-dotenv==0.9.1
