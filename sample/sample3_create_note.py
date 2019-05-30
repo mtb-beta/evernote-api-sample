@@ -1,16 +1,19 @@
+"""
+NOTE:指定したノートブックにノートを作成するサンプル
+"""
 import os
-from dotenv import load_dotenv
+from decouple import config
 
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
 
 
-load_dotenv()
-TOKEN = os.getenv("EVERNOTE_DEVELOPPER_TOKEN")
+TOKEN = config("EVERNOTE_DEVELOPPER_TOKEN")
+USE_SANDBOX = config("USE_SANDBOX", True, cast=bool)
 NOTEBOOK = "My Sample Notebook"
 
 def main():
-    client = EvernoteClient(token=TOKEN)
+    client = EvernoteClient(token=TOKEN, sandbox=USE_SANDBOX)
     note_store = client.get_note_store()
     notebooks = note_store.listNotebooks()
     target_notebook = None
