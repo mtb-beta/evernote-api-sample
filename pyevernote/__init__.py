@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 
 from evernote.api.client import EvernoteClient
+from evernote.edam.type import ttypes as Types
 from evernote.edam.notestore.ttypes import NoteFilter, NotesMetadataResultSpec
 from evernote.edam.type.ttypes import NoteSortOrder
 
