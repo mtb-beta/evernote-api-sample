@@ -31,6 +31,18 @@ class Note:
         content_soup = BeautifulSoup(note.content, 'html.parser')
         return content_soup.find('en-note').text
 
+    @property
+    def notebook(self):
+        return self.note_meta.notebookGuid
+
+    @notebook.setter
+    def notebook(self, notebook):
+        self.note_meta.notebookGuid = notebook.guid
+
+    def save(self):
+        self.app.note_store.updateNote(self.note_meta)
+
+
 class EvernoteApp:
     def __init__(self, token, use_sandbox):
         self.token = token
@@ -86,25 +98,25 @@ def main():
     to_notebook_name = "My Sample Notebook1"
     note_title = "This is my seccond note"
 
-    evernote_app = EvernoteApp(token=TOKEN, use_sandbox=USE_SANDBOX)
+    app = EvernoteApp(token=TOKEN, use_sandbox=USE_SANDBOX)
 
     # 移動元のノートブックを探す
-    from_notebook = evernote_app.get_notebook(from_notebook_name)
+    from_notebook = app.get_notebook(from_notebook_name)
     if not from_notebook:
         print("Notebook {} Not Found.".format(from_notebook_name))
         exit()
 
 
     # 移動先のノートブックを探す
-    to_notebook = evernote_app.get_notebook(to_notebook_name)
+    to_notebook = app.get_notebook(to_notebook_name)
     if not to_notebook:
         print("Notebook {} Not Found.".format(to_notebook_name))
         exit()
 
     # 移動元のノートブックの先頭にあるノートを移動先のノートに移す
-    notes = evernote_app.list_notes(from_notebook)
-    notes[0].note_meta.notebookGuid=to_notebook.guid
-    evernote_app.note_store.updateNote(notes[0].note_meta)
+    notes = app.list_notes(from_notebook)
+    notes[0].notebook = to_notebook
+    notes[0].save()
 
 if __name__ == "__main__":
     main()
